@@ -1,0 +1,39 @@
+.volatility-chart-container {
+  width: 100%;
+}
+
+.controls {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.controls select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.volatility-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+  border-radius: 4px;
+}
+
+.volatility-info p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
