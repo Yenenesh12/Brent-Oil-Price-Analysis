@@ -35,7 +35,7 @@ Brent-Oil-Price-Analysis/
 
 1. Clone the repository:
 ```bash
-git clone <[repository-url](https://github.com/Yenenesh12/Brent-Oil-Price-Analysis.git)>
+git clone <(https://github.com/Yenenesh12/Brent-Oil-Price-Analysis.git)>
 cd Brent-Oil-Price-Analysis
 ```
 
