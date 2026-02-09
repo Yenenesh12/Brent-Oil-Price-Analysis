@@ -3,7 +3,7 @@
 ## Project Overview
 This project analyzes Brent crude oil price fluctuations using Bayesian change point detection models to identify structural breaks and their correlation with major geopolitical and economic events.
 
-**Organization:** Birhan Energies  
+**Organization:** Birhan Energies
 **Objective:** Data-driven decision-making in the energy market through statistical analysis of oil price dynamics.
 
 ## Project Structure
@@ -94,10 +94,4 @@ pip install -r requirements.txt
 - Change point detection model
 - Final report with insights and limitations
 
-## Contributors
 
-[Your Name]
-
-## License
-
-[License Type]
