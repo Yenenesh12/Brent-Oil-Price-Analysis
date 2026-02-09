@@ -49,8 +49,12 @@ Brent-Oil-Price-Analysis/
 ### 1. Installation
 
 ```bash
+<<<<<<< task-2-3
 # Clone the repository
 git clone <repository-url>
+=======
+git clone <(https://github.com/Yenenesh12/Brent-Oil-Price-Analysis.git)>
+>>>>>>> main
 cd Brent-Oil-Price-Analysis
 
 # Create and activate virtual environment
@@ -240,6 +244,7 @@ Where `max_window = 60 days` (±2 months)
 
 ## Future Work
 
+<<<<<<< task-2-3
 - Extend to multiple change points with hierarchical models
 - Incorporate macroeconomic indicators (GDP, inflation, exchange rates)
 - VAR models for dynamic relationships
@@ -262,3 +267,6 @@ This project is part of Birhan Energies' data science initiative. For questions 
 - PyMC development team for excellent Bayesian modeling tools
 
 
+=======
+
+>>>>>>> main
