@@ -35,7 +35,7 @@ Brent-Oil-Price-Analysis/
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone <[repository-url](https://github.com/Yenenesh12/Brent-Oil-Price-Analysis.git)>
 cd Brent-Oil-Price-Analysis
 ```
 
@@ -94,10 +94,4 @@ pip install -r requirements.txt
 - Change point detection model
 - Final report with insights and limitations
 
-## Contributors
 
-[Your Name]
-
-## License
-
-[License Type]
