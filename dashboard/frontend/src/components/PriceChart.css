@@ -1,0 +1,73 @@
+.price-chart-container {
+  width: 100%;
+}
+
+.custom-tooltip {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.custom-tooltip .label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.custom-tooltip .price {
+  color: #1e3c72;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.custom-tooltip .events {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.custom-tooltip .events-title {
+  font-weight: bold;
+  color: #d32f2f;
+  margin-bottom: 5px;
+}
+
+.custom-tooltip .event-item {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 3px 0;
+}
+
+.changepoints-legend {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.changepoints-legend h3 {
+  color: #1e3c72;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.changepoints-legend ul {
+  list-style: none;
+  padding: 0;
+}
+
+.changepoints-legend li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.changepoints-legend li:last-child {
+  border-bottom: none;
+}
+
+.changepoints-legend .ci {
+  color: #666;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
