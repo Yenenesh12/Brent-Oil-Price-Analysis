@@ -2,9 +2,20 @@
 Event correlation module for linking changepoints with geopolitical events.
 """
 
+from dataclasses import dataclass
+from typing import List, Dict, Optional
+
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+
+
+@dataclass
+class CorrelationResult:
+    """Dataclass for correlation results."""
+    changepoint_index: int
+    changepoint_date: datetime
+    events: List[Dict[str, any]]
 
 
 class EventCorrelator:
@@ -15,7 +26,7 @@ class EventCorrelator:
     by temporal proximity and category relevance.
     """
     
-    def __init__(self, events_df, dates):
+    def __init__(self, events_df: pd.DataFrame, dates: pd.Series):
         """
         Initialize the event correlator.
         
@@ -29,8 +40,8 @@ class EventCorrelator:
         dates : pd.Series or array-like
             Series of dates corresponding to the time series indices
         """
-        self.events_df = events_df.copy()
-        self.dates = pd.Series(dates) if not isinstance(dates, pd.Series) else dates.copy()
+        self.events_df: pd.DataFrame = events_df.copy()
+        self.dates: pd.Series = pd.Series(dates) if not isinstance(dates, pd.Series) else dates.copy()
         
         # Ensure dates are datetime objects
         if not pd.api.types.is_datetime64_any_dtype(self.events_df['Date']):
@@ -39,7 +50,7 @@ class EventCorrelator:
         if not pd.api.types.is_datetime64_any_dtype(self.dates):
             self.dates = pd.to_datetime(self.dates)
     
-    def correlate_changepoints(self, changepoint_indices, window_days=30):
+    def correlate_changepoints(self, changepoint_indices: List[int], window_days: int = 30) -> List[CorrelationResult]:
         """
         Correlate changepoints with nearby geopolitical events.
         
@@ -52,32 +63,24 @@ class EventCorrelator:
         
         Returns:
         --------
-        list of dict : Correlation results for each changepoint
-            Each dict contains:
-            - changepoint_index: int
-            - changepoint_date: datetime
-            - events: list of event dicts with proximity scores
+        list of CorrelationResult
         """
-        results = []
+        results: List[CorrelationResult] = []
         
         for idx in changepoint_indices:
-            # Convert index to date
             if idx >= len(self.dates):
                 print(f"Warning: Changepoint index {idx} exceeds date range")
                 continue
             
             changepoint_date = self.dates.iloc[idx]
             
-            # Define time window
             start_date = changepoint_date - timedelta(days=window_days)
             end_date = changepoint_date + timedelta(days=window_days)
             
-            # Filter events within window
             mask = (self.events_df['Date'] >= start_date) & (self.events_df['Date'] <= end_date)
             nearby_events = self.events_df[mask].copy()
             
-            # Calculate proximity scores for each event
-            event_list = []
+            event_list: List[Dict[str, any]] = []
             for _, event_row in nearby_events.iterrows():
                 event_date = event_row['Date']
                 days_diff = (event_date - changepoint_date).days
@@ -93,18 +96,17 @@ class EventCorrelator:
                     'days_difference': days_diff
                 })
             
-            # Sort events by proximity score (descending)
             event_list.sort(key=lambda x: x['proximity_score'], reverse=True)
             
-            results.append({
-                'changepoint_index': idx,
-                'changepoint_date': changepoint_date,
-                'events': event_list
-            })
+            results.append(CorrelationResult(
+                changepoint_index=idx,
+                changepoint_date=changepoint_date,
+                events=event_list
+            ))
         
         return results
     
-    def calculate_proximity_score(self, changepoint_date, event_date, max_days=30):
+    def calculate_proximity_score(self, changepoint_date: datetime, event_date: datetime, max_days: int = 30) -> float:
         """
         Calculate temporal proximity score between changepoint and event.
         
@@ -129,7 +131,7 @@ class EventCorrelator:
         score = 1 - (days_diff / max_days)
         return max(0.0, score)
     
-    def rank_events_by_relevance(self, events, category_weights=None):
+    def rank_events_by_relevance(self, events: pd.DataFrame, category_weights: Optional[Dict[str, float]] = None) -> pd.DataFrame:
         """
         Rank events by relevance using proximity and category weighting.
         
@@ -173,7 +175,7 @@ class EventCorrelator:
         
         return events_copy
     
-    def generate_correlation_report(self):
+    def generate_correlation_report(self) -> pd.DataFrame:
         """
         Generate a structured correlation report DataFrame.
         
@@ -213,10 +215,10 @@ if __name__ == "__main__":
     
     print("Correlation Results:")
     for result in results:
-        print(f"\nChangepoint at index {result['changepoint_index']} "
-              f"({result['changepoint_date'].strftime('%Y-%m-%d')}):")
-        if result['events']:
-            for i, event in enumerate(result['events'][:3], 1):  # Show top 3
+        print(f"\nChangepoint at index {result.changepoint_index} "
+              f"({result.changepoint_date.strftime('%Y-%m-%d')}):")
+        if result.events:
+            for i, event in enumerate(result.events[:3], 1):  # Show top 3
                 print(f"  {i}. {event['description']}")
                 print(f"     Date: {event['event_date'].strftime('%Y-%m-%d')}, "
                       f"Proximity: {event['proximity_score']:.2f}, "

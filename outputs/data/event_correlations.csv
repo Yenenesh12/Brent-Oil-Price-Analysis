@@ -1,0 +1,8 @@
+changepoint_date,event_date,event_description,event_category,days_difference,proximity_score
+1990-08-02,1990-08-02,Iraq invasion of Kuwait,War,0,1.0
+1990-08-02,1990-08-06,UN Security Council Resolution 661 (sanctions on Iraq),Policy,4,0.93
+2003-03-20,2003-03-20,US-led invasion of Iraq begins,War,0,1.0
+2003-03-20,2003-03-17,President Bush ultimatum to Saddam Hussein,Policy,-3,0.95
+2008-09-15,2008-09-15,Lehman Brothers files for bankruptcy,Economic,0,1.0
+2008-09-15,2008-09-07,US government takes over Fannie Mae and Freddie Mac,Economic,-8,0.87
+2008-09-15,2008-09-16,AIG bailout announced,Economic,1,0.98
