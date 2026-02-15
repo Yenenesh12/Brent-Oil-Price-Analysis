@@ -2,14 +2,31 @@
 Data loading and preprocessing module for Brent oil price analysis.
 """
 
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Optional, Dict
+
 import pandas as pd
 import numpy as np
+
+
+@dataclass
+class DataSummary:
+    """Dataclass for summary statistics."""
+    count: int
+    mean: float
+    median: float
+    std: float
+    min_price: float
+    max_price: float
+    start_date: datetime
+    end_date: datetime
 
 
 class BrentDataLoader:
     """Load and preprocess Brent oil price data."""
 
-    def __init__(self, data_path='data/events/BrentOilPrices.csv'):
+    def __init__(self, data_path: str = 'data/events/BrentOilPrices.csv'):
         """
         Initialize data loader.
 
@@ -18,75 +35,57 @@ class BrentDataLoader:
         data_path : str
             Path to Brent oil prices CSV file
         """
-        self.data_path = data_path
-        self.df = None
+        self.data_path: str = data_path
+        self.df: Optional[pd.DataFrame] = None
 
-    def load_data(self):
+    def load_data(self) -> pd.DataFrame:
         """Load Brent oil price data from CSV."""
         self.df = pd.read_csv(self.data_path)
         print(f"Loaded {len(self.df)} records")
         return self.df
 
-    def preprocess(self):
+    def preprocess(self) -> pd.DataFrame:
         """Clean and preprocess the data."""
         if self.df is None:
             raise ValueError("Data not loaded. Call load_data() first.")
 
-        # ✅ Convert Date column to datetime (pandas 2.x compatible)
-        self.df['Date'] = pd.to_datetime(
-            self.df['Date'],
-            errors='coerce'
-        )
+        self.df['Date'] = pd.to_datetime(self.df['Date'], errors='coerce')
+        self.df = self.df.dropna(subset=['Date']).sort_values('Date').reset_index(drop=True)
 
-        # Drop rows with invalid dates
-        self.df = self.df.dropna(subset=['Date'])
-
-        # Sort by date
-        self.df = self.df.sort_values('Date').reset_index(drop=True)
-
-        # Check for missing price values
         missing = self.df['Price'].isna().sum()
         if missing > 0:
             print(f"Warning: {missing} missing price values found")
             self.df['Price'] = self.df['Price'].ffill()
 
-        # Remove non-positive prices (log safety)
         self.df = self.df[self.df['Price'] > 0]
-
-        # Calculate simple returns
         self.df['Returns'] = self.df['Price'].pct_change()
-
-        # Calculate log returns
         self.df['Log_Returns'] = np.log(self.df['Price']).diff()
 
-        print(
-            f"Data preprocessed: "
-            f"{self.df['Date'].min()} to {self.df['Date'].max()}"
-        )
-
+        print(f"Data preprocessed: {self.df['Date'].min()} to {self.df['Date'].max()}")
         return self.df
 
-    def get_summary_stats(self):
+    def get_summary_stats(self) -> DataSummary:
         """Get summary statistics of the price data."""
         if self.df is None:
             raise ValueError("Data not loaded. Call load_data() first.")
 
-        return {
-            'count': len(self.df),
-            'mean': self.df['Price'].mean(),
-            'median': self.df['Price'].median(),
-            'std': self.df['Price'].std(),
-            'min': self.df['Price'].min(),
-            'max': self.df['Price'].max(),
-            'start_date': self.df['Date'].min(),
-            'end_date': self.df['Date'].max()
-        }
+        prices = self.df['Price']
+        return DataSummary(
+            count=len(self.df),
+            mean=float(prices.mean()),
+            median=float(prices.median()),
+            std=float(prices.std()),
+            min_price=float(prices.min()),
+            max_price=float(prices.max()),
+            start_date=self.df['Date'].min(),
+            end_date=self.df['Date'].max()
+        )
 
 
 class EventDataLoader:
     """Load geopolitical and economic events data."""
 
-    def __init__(self, events_path='data/events/geopolitical_events.csv'):
+    def __init__(self, events_path: str = 'data/events/geopolitical_events.csv'):
         """
         Initialize event data loader.
 
@@ -95,32 +94,27 @@ class EventDataLoader:
         events_path : str
             Path to events CSV file
         """
-        self.events_path = events_path
-        self.events_df = None
+        self.events_path: str = events_path
+        self.events_df: Optional[pd.DataFrame] = None
 
-    def load_events(self):
+    def load_events(self) -> pd.DataFrame:
         """Load events data from CSV."""
         self.events_df = pd.read_csv(self.events_path)
 
-        # Safe datetime conversion
-        self.events_df['Date'] = pd.to_datetime(
-            self.events_df['Date'],
-            errors='coerce'
-        )
-
+        self.events_df['Date'] = pd.to_datetime(self.events_df['Date'], errors='coerce')
         self.events_df = self.events_df.dropna(subset=['Date'])
 
         print(f"Loaded {len(self.events_df)} events")
         return self.events_df
 
-    def get_events_by_category(self, category):
+    def get_events_by_category(self, category: str) -> pd.DataFrame:
         """Filter events by category."""
         if self.events_df is None:
             raise ValueError("Events not loaded. Call load_events() first.")
 
         return self.events_df[self.events_df['Category'] == category]
 
-    def get_events_in_range(self, start_date, end_date):
+    def get_events_in_range(self, start_date: datetime, end_date: datetime) -> pd.DataFrame:
         """Get events within a date range."""
         if self.events_df is None:
             raise ValueError("Events not loaded. Call load_events() first.")
@@ -143,8 +137,7 @@ if __name__ == "__main__":
 
     print("\nSummary Statistics:")
     stats = loader.get_summary_stats()
-    for key, value in stats.items():
-        print(f"{key}: {value}")
+    print(stats)
 
     print("\n" + "=" * 50)
 

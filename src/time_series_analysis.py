@@ -3,6 +3,8 @@ Time series analysis module for Brent oil prices.
 Includes trend analysis, stationarity testing, and volatility analysis.
 """
 
+from typing import List, Dict, Tuple, Optional
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,7 +17,7 @@ from scipy import stats
 class TimeSeriesAnalyzer:
     """Analyze time series properties of oil price data."""
     
-    def __init__(self, df, price_col='Price', date_col='Date'):
+    def __init__(self, df: pd.DataFrame, price_col: str = 'Price', date_col: str = 'Date'):
         """
         Initialize analyzer.
         
@@ -28,14 +30,14 @@ class TimeSeriesAnalyzer:
         date_col : str
             Name of date column
         """
-        self.df = df.copy()
-        self.price_col = price_col
-        self.date_col = date_col
+        self.df: pd.DataFrame = df.copy()
+        self.price_col: str = price_col
+        self.date_col: str = date_col
         
         if date_col in self.df.columns:
             self.df.set_index(date_col, inplace=True)
     
-    def test_stationarity(self):
+    def test_stationarity(self) -> Dict[str, Dict[str, any]]:
         """
         Perform stationarity tests (ADF and KPSS).
         
@@ -51,7 +53,7 @@ class TimeSeriesAnalyzer:
         # KPSS test
         kpss_result = kpss(prices, regression='c', nlags='auto')
         
-        results = {
+        results: Dict[str, Dict[str, any]] = {
             'ADF': {
                 'statistic': adf_result[0],
                 'p_value': adf_result[1],
@@ -68,7 +70,7 @@ class TimeSeriesAnalyzer:
         
         return results
     
-    def calculate_moving_averages(self, windows=[30, 90, 365]):
+    def calculate_moving_averages(self, windows: List[int] = [30, 90, 365]) -> pd.DataFrame:
         """
         Calculate moving averages.
         
@@ -83,7 +85,7 @@ class TimeSeriesAnalyzer:
         
         return self.df
     
-    def calculate_volatility(self, windows=[30, 90]):
+    def calculate_volatility(self, windows: List[int] = [30, 90]) -> pd.DataFrame:
         """
         Calculate rolling volatility (standard deviation).
         
@@ -101,7 +103,7 @@ class TimeSeriesAnalyzer:
         
         return self.df
     
-    def detect_outliers(self, threshold=3):
+    def detect_outliers(self, threshold: float = 3) -> pd.DataFrame:
         """
         Detect outliers using z-score method.
         
@@ -114,20 +116,17 @@ class TimeSeriesAnalyzer:
             self.df['Returns'] = self.df[self.price_col].pct_change()
         
         returns = self.df['Returns'].dropna()
-        # Compute z-scores and align them with the returns index to avoid boolean
-        # mask length mismatches when selecting from the full dataframe.
         z_scores = np.abs(stats.zscore(returns))
         z_series = pd.Series(z_scores, index=returns.index)
         mask = z_series > threshold
-        # Reindex mask to match the full dataframe index; fill missing with False
         mask_full = mask.reindex(self.df.index, fill_value=False)
         outliers = self.df.loc[mask_full]
         
         return outliers
     
-    def get_descriptive_stats(self):
+    def get_descriptive_stats(self) -> Dict[str, pd.Series]:
         """Get descriptive statistics."""
-        stats_dict = {
+        stats_dict: Dict[str, pd.Series] = {
             'Price Statistics': self.df[self.price_col].describe(),
         }
         
@@ -136,7 +135,7 @@ class TimeSeriesAnalyzer:
         
         return stats_dict
     
-    def plot_price_series(self, figsize=(14, 6)):
+    def plot_price_series(self, figsize: Tuple[int, int] = (14, 6)) -> plt.Figure:
         """Plot price time series with moving averages."""
         fig, ax = plt.subplots(figsize=figsize)
         
@@ -156,7 +155,7 @@ class TimeSeriesAnalyzer:
         plt.tight_layout()
         return fig
     
-    def plot_volatility(self, figsize=(14, 6)):
+    def plot_volatility(self, figsize: Tuple[int, int] = (14, 6)) -> Optional[plt.Figure]:
         """Plot rolling volatility."""
         vol_cols = [col for col in self.df.columns if col.startswith('Volatility_')]
         
@@ -178,7 +177,7 @@ class TimeSeriesAnalyzer:
         plt.tight_layout()
         return fig
     
-    def plot_acf_pacf(self, lags=40, figsize=(14, 8)):
+    def plot_acf_pacf(self, lags: int = 40, figsize: Tuple[int, int] = (14, 8)) -> plt.Figure:
         """Plot ACF and PACF."""
         if 'Returns' not in self.df.columns:
             self.df['Returns'] = self.df[self.price_col].pct_change()
