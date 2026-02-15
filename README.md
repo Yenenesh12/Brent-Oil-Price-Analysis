@@ -80,6 +80,7 @@ Brent-Oil-Price-Analysis/
 
 ```bash
 git clone https://github.com/Yenenesh12/Brent-Oil-Price-Analysis.git
+
 cd Brent-Oil-Price-Analysis
 
 # Create and activate virtual environment
@@ -145,6 +146,12 @@ We detected 3 major change points aligning with known events:
 1. **Early 2000s**: Tied to Iraq War (75% event match, price volatility up 40%).
 2. **2008**: Financial crisis correlation (80% accuracy, mean price drop from $100 to $40).
 3. **2020**: Pandemic shift (90% alignment, fastest drop in history).
+- Extend to multiple change points with hierarchical models
+- Incorporate macroeconomic indicators (GDP, inflation, exchange rates)
+- VAR models for dynamic relationships
+- Markov-Switching models for regime detection
+- Real-time change point detection
+- Predictive modeling and forecasting
 
 Success metrics (measurable outcomes):
 - **Model Accuracy**: R-hat <1.01 (indicating reliable convergence), effective sample size >1000.
@@ -170,4 +177,4 @@ Limitations: Assumes discrete shifts (may miss gradual changes); event data is c
 ## Conclusion
 This project bridges technical analysis with business needs, providing Birhan Energies a competitive edge in oil markets. For demos or questions, contact yeneshdabot2022@gmail.com.
 
-*Word count: 812*
+
