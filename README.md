@@ -42,7 +42,7 @@ This project has been significantly enhanced to meet capstone requirements:
 ✅ **Comprehensive Documentation** - Analysis workflow, methodology, and limitations
 
 ## Project Structure
-Brent-Oil-Price-Analysis/
+```Brent-Oil-Price-Analysis/
 ├── data/
 │   └── events/
 │       ├── BrentOilPrices.csv           # Historical price data
@@ -73,6 +73,18 @@ Brent-Oil-Price-Analysis/
 ├── run_changepoint_analysis.py          # Main analysis script
 ├── requirements.txt                     # Python dependencies
 └── README.md
+```
+### Screenshots & Demo
+
+![Streamlit Dashboard - Price Overview](outputs/dashboard-screenshoot/dashboard-screenshot.jpg)
+*Interactive Streamlit dashboard showing Brent oil prices, detected change points, and event correlations.*
+
+![SHAP Explainability](outputs/figures/var_coefficient_heatmap.png)
+*SHAP feature importance heatmap from the VAR predictive model.*
+
+**Live Demo**  
+- Streamlit Dashboard: Run `streamlit run dashboard/streamlit/app.py`  
+- Original Flask + React Dashboard: See Quick Start below
 
 ## Quick Start
 

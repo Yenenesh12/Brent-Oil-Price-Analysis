@@ -3,9 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 import os
+from pathlib import Path
 
 # Add parent directory to path
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+project_root = Path(__file__).parent.parent.parent
+sys.path.append(str(project_root))
 
 from src.data_loader import BrentDataLoader
 from src.changepoint_model import BayesianChangePointModel
@@ -15,7 +17,8 @@ st.title("Brent Oil Price Analysis Dashboard")
 # Load data
 @st.cache_data
 def load_data():
-    loader = BrentDataLoader(data_path='../../data/events/BrentOilPrices.csv')
+    data_path = project_root / 'data' / 'events' / 'BrentOilPrices.csv'
+    loader = BrentDataLoader(data_path=str(data_path))
     df = loader.load_data()
     df = loader.preprocess()
     return df
