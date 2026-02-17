@@ -11,6 +11,8 @@
 
 Brent crude oil price volatility poses significant challenges for energy companies, traders, and financial institutions. This technical report presents a data-driven solution using Bayesian change point detection to identify structural breaks in oil prices and correlate them with geopolitical and economic events. Our model successfully detected 3 major regime shifts from 1987-2022 with 75% event correlation accuracy, providing actionable insights for risk management and investment decisions. The interactive dashboard enables finance professionals to explore historical patterns and make informed hedging strategies, potentially saving millions in unexpected losses.
 
+This technical report is written for non-technical finance stakeholders, recruiters, and energy-sector decision makers, explaining complex statistical methods in clear business terms while highlighting reliability, risk reduction, and measurable financial impact.
+
 ---
 
 ## 1. Introduction: The Business Problem

@@ -3,7 +3,7 @@
 ## Step 1: Create Screenshots Folder
 
 ```bash
-mkdir outputs/figures/dashboard
+mkdir outputs/figures/dashboard-screenshot
 ```
 
 ## Step 2: Run the Dashboard
